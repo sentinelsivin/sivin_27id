@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using CodeBase.Infrastructure.DataProvider;
+using CodeBase.Infrastructure.SceneLoad;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using CodeBase.Infrastructure.DataProvider;
-using CodeBase.Infrastructure.SceneLoad;
 
-namespace CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.VContainer
 {
     public  class RootLifetimeScope : LifetimeScope
     {
@@ -23,9 +23,13 @@ namespace CodeBase.Infrastructure
             builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
             
             builder.RegisterComponent(_bootstrapper);
+            
+            builder.Register<IDataBootstrap, DataBootstrap>(Lifetime.Singleton);
+            builder.Register<IStartupSequence, StartupSequence>(Lifetime.Singleton);
 
-            builder.Register<IDataProvider, DataLocalProvider>(Lifetime.Singleton);
             builder.Register<IPersistentData, PersistentData>(Lifetime.Singleton);
+            builder.Register<IDataProvider, DataLocalProvider>(Lifetime.Singleton);
+
 
             // Сервис загрузки сцен
 

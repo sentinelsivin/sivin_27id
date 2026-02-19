@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Infrastructure.GameplayLifetimeScope
   parentReference:
-    TypeName: CodeBase.Infrastructure.RootLifetimeScope
+    TypeName: CodeBase.Infrastructure.VContainer.RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
   _bootstrapComponents: {fileID: 212853480}

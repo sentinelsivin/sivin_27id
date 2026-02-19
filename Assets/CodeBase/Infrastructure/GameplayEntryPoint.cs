@@ -6,10 +6,7 @@ namespace CodeBase.Infrastructure
     {
         private readonly BootstrapComponents _bootstrap;
 
-        public GameplayEntryPoint(BootstrapComponents bootstrap)
-        {
-            _bootstrap = bootstrap;
-        }
+        public GameplayEntryPoint(BootstrapComponents bootstrap) => _bootstrap = bootstrap;
 
         public void Start() => _bootstrap.Run();
     }

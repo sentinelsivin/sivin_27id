@@ -1,15 +1,15 @@
 using CodeBase.Services.StateMachine;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using UnityEngine;
 
-namespace CodeBase.Infrastructure
+namespace CodeBase.Infrastructure.VContainer
 {
     public class GameplayLifetimeScope : LifetimeScope
     {
         [SerializeField] private BootstrapComponents _bootstrapComponents;
         [SerializeField] private MainSceneMode _mainSceneMode;
-
+        
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<BootstrapComponents>();
