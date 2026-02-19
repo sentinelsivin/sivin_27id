@@ -1,4 +1,5 @@
 using CodeBase.Infrastructure.DataProvider;
+using CodeBase.Services.StateMachine;
 using UnityEngine;
 using VContainer;
 
@@ -6,6 +7,8 @@ namespace CodeBase.Infrastructure
 {
     public class BootstrapComponents : MonoBehaviour
     {
+        [SerializeField] private MainSceneMode _mainSceneMode;
+        
         private IDataProvider _dataProvider;
         private IPersistentData _persistentData;
         
@@ -16,10 +19,12 @@ namespace CodeBase.Infrastructure
             _persistentData = persistentData;
         }
         
-        private void Start()
+        public void Run()
         {
-          Debug.Log($"Starting {_dataProvider}");
-          Debug.Log($"Starting {_persistentData}");
+            _mainSceneMode.Bootstrap(); 
+            
+            Debug.Log($"Starting {_dataProvider}");
+            Debug.Log($"Starting {_persistentData}");
         }
         
     }

@@ -8,11 +8,23 @@ namespace CodeBase.Services.StateMachine
       
         [SerializeField] private List<StateMachineBehavior> _states;
         private StateMachine _stateMachine;
-        private const int DefaultState = 0;
+        private const int DefaultState = 1;
 
-        private void Awake() => InitStates();
-        
-        private void Start() => _stateMachine.Change(_states[DefaultState].GetType());
+        public void Bootstrap()
+        {
+            if (_stateMachine != null) return;
+
+            InitStates();
+
+            var index = Mathf.Clamp(DefaultState, 0, _states.Count - 1);
+            if (_stateMachine != null) _stateMachine.Change(_states[index].GetType());
+        }
+
+        public void Shutdown()
+        {
+            _stateMachine?.Release();
+            _stateMachine = null;
+        }
 
         private void OnDestroy() => _stateMachine.Release();
 

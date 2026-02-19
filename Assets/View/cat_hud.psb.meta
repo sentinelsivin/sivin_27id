@@ -1470,6 +1470,42 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: iPhone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: VisionOS
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   mosaicLayers: 1
   characterMode: 1
   documentPivot: {x: 0, y: 0}
@@ -1496,7 +1532,85 @@ ScriptedImporter:
     categories: []
   spritePackingTag: 
   resliceFromLayer: 0
-  pSDLayerImportSetting: []
+  pSDLayerImportSetting:
+  - spriteId: 026113f5347d48f4b9f9f0511d369410
+    name: MainMenu
+    layerId: 177
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: 998484f197836a8459ccc1945aa5af2d
+    name: MenuResult
+    layerId: 130
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: 93d40da61dce38a4db480c79c9318f05
+    name: Cat
+    layerId: 124
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: 922072fdefa95d446a344b0f49511daa
+    name: Dice
+    layerId: 114
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: e8fbc22eb451a1b44a7fdc6c53aaaf17
+    name: 5
+    layerId: 103
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: 6db607a26812eb843855497bc57b2727
+    name: 4
+    layerId: 111
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: 3fc6e1e7898d5524b920dc005d094df5
+    name: 3
+    layerId: 106
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: 4b09339702d8cb74f9e118de41a1ff2c
+    name: 2
+    layerId: 108
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: e095c06859449e2449c1cca8b10e6899
+    name: 1
+    layerId: 109
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: d740d21ba804aee41967340120eae855
+    name: Text
+    layerId: 78
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: ea9ac83df2432d34ca041a9c9163e115
+    name: Group 1
+    layerId: 46
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
+  - spriteId: d041df9a8ffc9ac468bf08ed66aa678d
+    name: reference
+    layerId: 5
+    flatten: 0
+    isGroup: 0
+    importLayer: 1
+  - spriteId: 7aaba66a7e71f8646b471f79b132366b
+    name: Elemnt
+    layerId: 18
+    flatten: 0
+    isGroup: 1
+    importLayer: 1
   psdLayers:
   - name: Artboard 1
     spriteName: 
