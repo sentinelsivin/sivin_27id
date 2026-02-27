@@ -5,7 +5,8 @@ namespace CodeBase.Domain.Match
 {
     public interface IMatchRules
     {
-        bool CanPlaceDice(Domain.Field.Field field, PlayerId playerId, Domain.Dice.Dice dice, CellPosition pos);
+        void ResolveAfterPlacement(Field.Field field, PlayerId placedBy, Dice.Dice placedDice, CellPosition pos);
+        MatchResult? TryGetResult(Field.Field field);
+        
     }
-    
 }

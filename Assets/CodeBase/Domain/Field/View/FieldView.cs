@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeBase.Domain.Field.Cell;
 using UnityEngine;
 
 namespace CodeBase.Domain.Field.View
@@ -11,6 +12,16 @@ namespace CodeBase.Domain.Field.View
         public void Build(IEnumerable<Domain.Field.Field> heroes)
         {
             
+        }
+
+        public void Clear()
+        {
+            
+        }
+
+        public void PlaceDice(Dice.Dice dice, CellPosition pos)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

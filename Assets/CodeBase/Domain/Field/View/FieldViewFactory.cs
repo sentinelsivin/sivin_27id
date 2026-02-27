@@ -4,6 +4,9 @@ namespace CodeBase.Domain.Field.View
 {
     public class FieldViewFactory : ScriptableObject
     {
-        
+        public FieldView Create(RectTransform filedFirstPanel)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

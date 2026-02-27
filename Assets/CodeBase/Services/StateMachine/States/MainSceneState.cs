@@ -1,6 +1,6 @@
-namespace CodeBase.Services.StateMachine.States
+﻿namespace CodeBase.Services.StateMachine.States
 {
-    public class StartGameState : StateMachineBehavior
+    public class MainSceneState : StateMachineBehavior
     {
         protected override void OnEnter()
         {

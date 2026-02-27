@@ -8,7 +8,7 @@ using CodeBase.Services.Turn;
 
 namespace CodeBase.Services.Flow
 {
-    public sealed class TurnSystem
+    public class TurnSystem
     {
         private readonly Match _match;
         private readonly IReadOnlyDictionary<PlayerId, IPlayerController> _controllers;

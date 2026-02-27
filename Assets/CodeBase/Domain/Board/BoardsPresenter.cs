@@ -30,6 +30,16 @@ namespace CodeBase.Domain.Board
             _bottomBoardView.EnsureDiceView(null);
             _topBoardView.EnsureDiceView(null);
         }
+        
+        public void Unbind()
+        {
+            if (_match != null)
+                _match.DiceChanged -= OnDiceChanged;
+
+            _match = null;
+            _slotByPlayer.Clear();
+            _viewBySlot.Clear();
+        }
 
         private void OnDiceChanged(PlayerId playerId, Dice.Dice dice)
         {

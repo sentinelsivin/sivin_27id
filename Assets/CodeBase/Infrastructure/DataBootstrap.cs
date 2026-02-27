@@ -3,7 +3,7 @@ using CodeBase.Infrastructure.DataProvider;
 
 namespace CodeBase.Infrastructure
 {
-    public sealed class DataBootstrap : IDataBootstrap
+    public class DataBootstrap : IDataBootstrap
     {
         private readonly IDataProvider _dataProvider;
         private readonly IPersistentData _persistentData;

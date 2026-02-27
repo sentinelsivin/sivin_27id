@@ -9,7 +9,8 @@ namespace CodeBase.Domain.Dice
         public DicePointType dicePointType;
         
         private static Random _random = new Random();
-        
+        public int Value { get; set; }
+
         public Dice Roll()
         {
             Dice data = new Dice();

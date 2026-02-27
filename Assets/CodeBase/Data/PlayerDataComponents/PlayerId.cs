@@ -8,19 +8,10 @@ namespace CodeBase.Data.PlayerDataComponents
 
         public int Value { get; }
 
-        public bool Equals(PlayerId other)
-        {
-            return Value == other.Value;
-        }
+        public bool Equals(PlayerId other) => Value == other.Value;
 
-        public override bool Equals(object obj)
-        {
-            return obj is PlayerId other && Equals(other);
-        }
+        public override bool Equals(object obj) => obj is PlayerId other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            return Value;
-        }
+        public override int GetHashCode() => Value;
     }
 }
