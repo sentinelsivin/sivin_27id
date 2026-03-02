@@ -5,6 +5,6 @@ namespace CodeBase.Services.StateMachine
     public class MainSceneMode : StateModeBehavior
     {
         public void GoToMain() => ChangeState<MainSceneState>();
-        public void GoToGame() => ChangeState<GameState>();
+        public void GoToGame() => ChangeState<GameplayState>();
     }
 }

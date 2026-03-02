@@ -4,12 +4,12 @@ using CodeBase.Services.Participants;
 
 namespace CodeBase.Services.GameStart
 {
-    public class StartGameCoordinator
+    public class GameStartConfigFactory
     {
         private readonly IParticipantsProvider _participantsProvider;
         private readonly IFirstTurnSelector _firstTurnSelector;
 
-        public StartGameCoordinator(
+        public GameStartConfigFactory(
             IParticipantsProvider participantsProvider,
             IFirstTurnSelector firstTurnSelector)
         {

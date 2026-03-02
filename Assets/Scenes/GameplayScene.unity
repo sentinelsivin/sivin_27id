@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 584325786}
   - component: {fileID: 584325787}
   m_Layer: 0
-  m_Name: GameState
+  m_Name: GameplayState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1557,6 +1557,8 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _bootstrapComponents: {fileID: 212853480}
   _mainSceneMode: {fileID: 1957376390}
+  _gameCoordinator: {fileID: 1885845687}
+  gameplayState: {fileID: 584325787}
 --- !u!1 &652259440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,6 +2021,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &697231752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 697231753}
+  m_Layer: 0
+  m_Name: Match
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &697231753
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697231752}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1885845686}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &724563837
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,7 +2709,7 @@ GameObject:
   - component: {fileID: 1145303664}
   - component: {fileID: 1145303665}
   m_Layer: 0
-  m_Name: StartGameState
+  m_Name: MainMenuState
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2706,9 +2739,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1145303663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e697fba42ff157d4db4eaffda9774813, type: 3}
+  m_Script: {fileID: 11500000, guid: 591535824a724414b85ba4edc6aaf71d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Services.StateMachine.States.StartGameState
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Services.StateMachine.States.MainSceneState
   _views:
   - {fileID: 73419848}
 --- !u!1 &1214099677
@@ -3345,8 +3378,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1885845686}
+  - component: {fileID: 1885845687}
   m_Layer: 0
-  m_Name: GamePlay
+  m_Name: GameCoordinator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3364,9 +3398,23 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 697231753}
   m_Father: {fileID: 621106217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1885845687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885845685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8870c6f8dd375a49975c41fe2a9bfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Services.GameCoordinator
+  _matchPresenter: {fileID: 0}
 --- !u!1 &1957376388
 GameObject:
   m_ObjectHideFlags: 0
@@ -3414,7 +3462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Services.StateMachine.MainSceneMode
   _states:
-  - {fileID: 0}
+  - {fileID: 1145303665}
   - {fileID: 584325787}
 --- !u!1 &2033554169
 GameObject:

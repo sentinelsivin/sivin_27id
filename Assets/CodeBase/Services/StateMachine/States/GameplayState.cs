@@ -3,15 +3,15 @@ using VContainer;
 
 namespace CodeBase.Services.StateMachine.States
 {
-    public class GameState : StateMachineBehavior
+    public class GameplayState : StateMachineBehavior
     {
    
-        [Inject] private StartGameCoordinator _startGame;
+        [Inject] private GameStartConfigFactory _gameStartGame;
         [Inject] private GameCoordinator _gameCoordinator;
 
         protected override void OnEnter()
         {
-            var config = _startGame.CreateConfig(GameMode.VsAi);
+            var config = _gameStartGame.CreateConfig(GameMode.VsAi);
             _gameCoordinator.StartGame(config);
         }
 

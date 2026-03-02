@@ -24,6 +24,7 @@ namespace CodeBase.Infrastructure
         public void Run()
         {
             _mainSceneMode.Bootstrap(); 
+            _mainSceneMode.GoToGame();
             
             Debug.Log($"Starting {_dataProvider}");
             Debug.Log($"Starting {_persistentData}");

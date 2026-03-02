@@ -2,6 +2,7 @@ using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Match;
 using CodeBase.Services.GameStart;
 using UnityEngine;
+using VContainer;
 
 namespace CodeBase.Services
 {
@@ -10,18 +11,12 @@ namespace CodeBase.Services
         [SerializeField] private MatchPresenter _matchPresenter;
 
         private MatchFactory _matchFactory;
-        private IMatchRules _rules;
         private Match _match;
-        
-        private PlayerId _playerFirst;
-        private PlayerId _playerSecond;
 
-        public void Initialize(PlayerId playerFirst, PlayerId playerSecond)
+        [Inject]
+        public void Construct(MatchFactory matchFactory)
         {
-            _playerFirst = playerFirst;
-            _playerSecond = playerSecond;
-            
-            _matchFactory = new MatchFactory(_rules);
+            _matchFactory = matchFactory;
         }
         public void StartGame(GameStartConfig config)
         {
