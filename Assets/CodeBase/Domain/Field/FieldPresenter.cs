@@ -1,5 +1,6 @@
 ﻿using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field.Cell;
+using CodeBase.Domain.Match;
 using UnityEngine;
 
 namespace CodeBase.Domain.Field
@@ -8,11 +9,11 @@ namespace CodeBase.Domain.Field
     {
         [SerializeField] private FieldPanel _fieldPanel;
 
-        private Match.Match _match;
+        private IMatchReadModel _match;
         private PlayerId _bottom;
         private PlayerId _top;
 
-        public void Bind(Match.Match match, PlayerId bottom, PlayerId top)
+        public void Bind(IMatchReadModel match, PlayerId bottom, PlayerId top)
         {
             Unbind();
 

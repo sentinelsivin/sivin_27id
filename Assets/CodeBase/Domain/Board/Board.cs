@@ -20,7 +20,5 @@ namespace CodeBase.Domain.Board
             DiceChanged?.Invoke(null);
         }
         
-        
-        
     }
 }

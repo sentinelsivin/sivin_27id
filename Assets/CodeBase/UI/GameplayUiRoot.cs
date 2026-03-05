@@ -6,7 +6,10 @@ namespace CodeBase.UI
 {
     public class GameplayUiRoot : MonoBehaviour
     {
-        public BoardsPresenter Boards { get; private set; }
-        public FieldPresenter Field { get; private set; }
+        [SerializeField] private BoardsPresenter _boards;
+        [SerializeField] private FieldPresenter _field;
+
+        public BoardsPresenter Boards => _boards;
+        public FieldPresenter Field => _field;
     }
 }

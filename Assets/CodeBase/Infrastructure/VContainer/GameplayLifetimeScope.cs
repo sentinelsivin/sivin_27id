@@ -1,5 +1,6 @@
 using CodeBase.Domain;
 using CodeBase.Domain.Match;
+using CodeBase.Domain.Match.Rules;
 using CodeBase.Infrastructure.DataProvider;
 using CodeBase.Services;
 using CodeBase.Services.FirstTurn;

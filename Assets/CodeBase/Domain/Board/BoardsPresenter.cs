@@ -1,34 +1,35 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
+using CodeBase.Domain.Match;
 using UnityEngine;
 
 namespace CodeBase.Domain.Board
 {
     public class BoardsPresenter : MonoBehaviour
     {
-        [SerializeField] private BoardView _bottomBoardView;
-        [SerializeField] private BoardView _topBoardView;
+        [SerializeField] private BoardView _playerBoardView;
+        [SerializeField] private BoardView _opponentBoardView;
 
         private readonly Dictionary<PlayerId, BoardSlot> _slotByPlayer = new();
         private readonly Dictionary<BoardSlot, BoardView> _viewBySlot = new();
 
-        private Match.Match _match;
+        private IMatchReadModel _match;
 
-        public void Bind(Match.Match match, PlayerId bottomPlayer, PlayerId topPlayer)
+        public void Bind(IMatchReadModel match, PlayerId localPlayer, PlayerId opponentPlayer)
         {
             _match = match;
 
-            _viewBySlot[BoardSlot.Bottom] = _bottomBoardView;
-            _viewBySlot[BoardSlot.Top] = _topBoardView;
+            _viewBySlot[BoardSlot.Player] = _playerBoardView;
+            _viewBySlot[BoardSlot.Opponent] = _opponentBoardView;
 
-            _slotByPlayer[bottomPlayer] = BoardSlot.Bottom;
-            _slotByPlayer[topPlayer] = BoardSlot.Top;
+            _slotByPlayer[localPlayer] = BoardSlot.Player;
+            _slotByPlayer[opponentPlayer] = BoardSlot.Opponent;
 
             _match.DiceChanged += OnDiceChanged;
 
             // очистить UI на старте
-            _bottomBoardView.EnsureDiceView(null);
-            _topBoardView.EnsureDiceView(null);
+            _playerBoardView.EnsureDiceView(null);
+            _opponentBoardView.EnsureDiceView(null);
         }
         
         public void Unbind()

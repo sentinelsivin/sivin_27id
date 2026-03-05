@@ -4,33 +4,30 @@ using UnityEngine;
 
 namespace CodeBase.Domain.Match
 {
-    public sealed class MatchPresenter : MonoBehaviour
+    public class MatchPresenter : MonoBehaviour
     {
         [SerializeField] private GameplayUiRoot _ui;
 
-        private Match _match;
+        private IMatchReadModel _model;
 
-        public void StartMatch(Match match, PlayerId bottom, PlayerId top)
+        public void StartMatch(IMatchReadModel model, PlayerId localPlayer, PlayerId opponentPlayer)
         {
             StopMatch();
 
-            _match = match;
+            _model = model;
 
-            _ui.Boards.Bind(_match, bottom, top);
-            _ui.Field.Bind(_match, bottom, top /* + bottom/top если надо */);
+            _ui.Boards.Bind(_model, localPlayer, opponentPlayer);
+            _ui.Field.Bind(_model, localPlayer, opponentPlayer);
         }
 
         public void StopMatch()
         {
-            // важно: Bind уже подписывает события,
-            // а OnDestroy отписывает — но StopMatch нужен для смены режимов/перезапуска без уничтожения объекта.
-            // Тогда делай явный Unbind (см. ниже).
-            if (_match == null) return;
+            if (_model == null) return;
 
             _ui.Boards.Unbind();
             _ui.Field.Unbind();
 
-            _match = null;
+            _model = null;
         }
 
         private void OnDestroy() => StopMatch();

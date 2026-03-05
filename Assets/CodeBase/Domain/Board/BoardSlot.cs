@@ -2,7 +2,7 @@
 {
     public enum BoardSlot
     {
-        Bottom,
-        Top
+        Player,
+        Opponent
     }
 }

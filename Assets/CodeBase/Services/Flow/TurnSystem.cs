@@ -12,11 +12,14 @@ namespace CodeBase.Services.Flow
     {
         private readonly Match _match;
         private readonly IReadOnlyDictionary<PlayerId, IPlayerController> _controllers;
+        private readonly int _maxAttempts;
 
-        public TurnSystem(Match match, IReadOnlyDictionary<PlayerId, IPlayerController> controllers)
+
+        public TurnSystem(Match match, IReadOnlyDictionary<PlayerId, IPlayerController> controllers, int maxAttempts)
         {
             _match = match ?? throw new ArgumentNullException(nameof(match));
             _controllers = controllers ?? throw new ArgumentNullException(nameof(controllers));
+            _maxAttempts = Math.Max(1, maxAttempts);
         }
 
         public async Task PlayTurnAsync(CancellationToken ct)
@@ -28,14 +31,21 @@ namespace CodeBase.Services.Flow
 
             // 2) запросить у контроллера позицию (UI/AI)
             var ctrl = _controllers[player];
-            var pos = await ctrl.RequestPlacementAsync(player, ct);
-
-            // 3) попытаться поставить
-            if (!_match.TryPlaceDice(player, pos))
+            for (int attempt = 0; attempt < _maxAttempts && !_match.IsFinished; attempt++)
             {
-                // минимально: если ход невалиден — повтор
-                // (потом можно сделать лимит попыток/сообщения)
-                return;
+                ct.ThrowIfCancellationRequested();
+
+                var pos = await ctrl.RequestPlacementAsync(player, ct);
+
+                if (_match.TryPlaceDice(player, pos))
+                {
+                    if (!_match.IsFinished)
+                        _match.EndTurn();
+                    return;
+                }
+
+                // optional: дать контроллеру знать, что попытка невалидна
+                // ctrl.NotifyInvalidMove(player, pos);
             }
 
             // 4) завершить ход

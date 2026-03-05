@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
 
-namespace CodeBase.Domain.Match
+namespace CodeBase.Domain.Match.Module
 {
-    public sealed class TurnOrder
+    public class TurnOrder
     {
         private readonly IReadOnlyList<PlayerId> _players;
         private int _index;

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field;
 using CodeBase.Domain.Field.Cell;
+using CodeBase.Domain.Match.Module;
 
-namespace CodeBase.Domain.Match
+namespace CodeBase.Domain.Match.Rules
 {
     public class DefaultMatchRules : IMatchRules
     {

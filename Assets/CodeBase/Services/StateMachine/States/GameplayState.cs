@@ -15,10 +15,6 @@ namespace CodeBase.Services.StateMachine.States
             _gameCoordinator.StartGame(config);
         }
 
-        protected override void OnExit()
-        {
-            _gameCoordinator.StopGame();
-        }
-        
+        protected override void OnExit() => _gameCoordinator.StopGame();
     }
 }

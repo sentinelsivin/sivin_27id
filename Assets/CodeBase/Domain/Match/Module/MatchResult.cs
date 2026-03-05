@@ -1,6 +1,6 @@
 ﻿using CodeBase.Data.PlayerDataComponents;
 
-namespace CodeBase.Domain.Match
+namespace CodeBase.Domain.Match.Module
 {
     public readonly struct MatchResult
     {

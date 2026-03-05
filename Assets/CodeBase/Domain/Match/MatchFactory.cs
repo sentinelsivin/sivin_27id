@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
+using CodeBase.Domain.Match.Module;
 
 namespace CodeBase.Domain.Match
 {
@@ -9,10 +10,7 @@ namespace CodeBase.Domain.Match
 
         public MatchFactory(IMatchRules rules) => _rules = rules;
 
-        public Match Create(IReadOnlyList<PlayerId> players)
-        {
-            var first = players[UnityEngine.Random.Range(0, players.Count)];
-            return new Match(players, first, _rules);
-        }
+        public Match Create(IReadOnlyList<PlayerId> players, PlayerId firstPlayer) => 
+            new(new MatchState(players, firstPlayer), _rules);
     }
 }

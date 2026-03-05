@@ -1,5 +1,6 @@
 ﻿using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field.Cell;
+using CodeBase.Domain.Match.Module;
 
 namespace CodeBase.Domain.Match
 {

@@ -821,7 +821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Infrastructure.BootstrapComponents
   _mainSceneMode: {fileID: 1957376390}
-  _gameCoordinator: {fileID: 0}
+  _gameCoordinator: {fileID: 1885845687}
 --- !u!4 &212853481
 Transform:
   m_ObjectHideFlags: 0
@@ -2030,6 +2030,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697231753}
+  - component: {fileID: 697231754}
   m_Layer: 0
   m_Name: Match
   m_TagString: Untagged
@@ -2052,6 +2053,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1885845686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &697231754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697231752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567cd30e3c114a18ad2b974b4af54eff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Domain.Match.MatchPresenter
+  _ui: {fileID: 1885845688}
 --- !u!1 &724563837
 GameObject:
   m_ObjectHideFlags: 0
@@ -2698,6 +2712,51 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1115963065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1115963066}
+  - component: {fileID: 1115963067}
+  m_Layer: 0
+  m_Name: Field
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1115963066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115963065}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1885845686}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1115963067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115963065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2affe5bd7c2c4de68fb607119b391c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Domain.Field.FieldPresenter
+  _fieldPanel: {fileID: 3505321718266595458}
 --- !u!1 &1145303663
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,6 +3155,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1687697547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1687697548}
+  - component: {fileID: 1687697549}
+  m_Layer: 0
+  m_Name: Board
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1687697548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687697547}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1885845686}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1687697549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687697547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dfb0aa16e054678b34e3e5b7651a0b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Domain.Board.BoardsPresenter
+  _bottomBoardView: {fileID: 8938657644615038606}
+  _topBoardView: {fileID: 7032923571169331294}
 --- !u!1 &1752038147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3379,6 +3484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885845686}
   - component: {fileID: 1885845687}
+  - component: {fileID: 1885845688}
   m_Layer: 0
   m_Name: GameCoordinator
   m_TagString: Untagged
@@ -3400,6 +3506,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 697231753}
+  - {fileID: 1687697548}
+  - {fileID: 1115963066}
   m_Father: {fileID: 621106217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1885845687
@@ -3414,7 +3522,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8870c6f8dd375a49975c41fe2a9bfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Services.GameCoordinator
-  _matchPresenter: {fileID: 0}
+  _matchPresenter: {fileID: 697231754}
+--- !u!114 &1885845688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885845685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b31c42aa9242df80b86b3af5ecd161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeBase.UI.GameplayUiRoot
+  _boards: {fileID: 1687697549}
+  _field: {fileID: 1115963067}
 --- !u!1 &1957376388
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,7 +3830,7 @@ GameObject:
   - component: {fileID: 8938657644615038605}
   - component: {fileID: 8938657644615038606}
   m_Layer: 0
-  m_Name: BoardPlayer1
+  m_Name: BoardBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4647,7 +4769,7 @@ GameObject:
   - component: {fileID: 5826291947166787873}
   - component: {fileID: 7032923571169331294}
   m_Layer: 0
-  m_Name: BoardPlayer2
+  m_Name: BoardUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5337,6 +5459,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 1497562233}
   - {fileID: 686358870}
   - {fileID: 621106217}
+  - {fileID: 1497562233}

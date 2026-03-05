@@ -3,103 +3,72 @@ using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field;
 using CodeBase.Domain.Field.Cell;
+using CodeBase.Domain.Match.Module;
 
 namespace CodeBase.Domain.Match
 {
-    public sealed class Match
+    public class Match : IMatchReadModel
     {
-        public event Action<PlayerId> ActivePlayerChanged;             // для UI/индикаторов
-        public event Action<PlayerId, Domain.Dice.Dice> DiceChanged;          // для BoardsPresenter
-        public event Action<PlayerId, Domain.Dice.Dice, CellPosition> DicePlaced; // для FieldPresenter
+        public event Action<PlayerId> ActivePlayerChanged;
+        public event Action<PlayerId, Dice.Dice> DiceChanged;
+        public event Action<PlayerId, Dice.Dice, CellPosition> DicePlaced;
         public event Action<PlayerId?> GameEnded;
-        public TurnOrder TurnOrder => _turnOrder;
-
-        private TurnOrder _turnOrder;
-        private readonly Dictionary<PlayerId, Domain.Board.Board> _boards = new();
-        private readonly Domain.Field.Field _field;
-        private readonly IMatchRules _rules;
-
-        private IReadOnlyList<PlayerId> _players;
-
-        public bool IsFinished { get; private set; }
+        
+        public IReadOnlyList<PlayerId> Players => State.Players;
+        public PlayerId ActivePlayer => State.TurnOrder.ActivePlayer;
+        public PlayerField GetField(PlayerId id) => State.GetField(id);
+        public Board.Board GetBoard(PlayerId id) => State.GetBoard(id);
+        public TurnOrder TurnOrder => State.TurnOrder;
+        
+        public MatchState State { get; }
         public PlayerId? Winner { get; private set; }
-
-        public Match(
-            IReadOnlyList<PlayerId> players,
-            PlayerId firstPlayer,
-            IMatchRules rules = null)
+        public bool IsFinished { get; private set; }
+        
+        private readonly IMatchRules _rules;
+        
+        public Match(MatchState state, IMatchRules rules)
         {
-            _players = players;
+            State = state ?? throw new ArgumentNullException(nameof(state));
+            _rules = rules ?? throw new ArgumentNullException(nameof(rules));
             
-            if (_players == null || _players.Count < 2)
-                throw new ArgumentException("Match needs at least 2 players.");
-
-            _rules = rules ?? new DefaultMatchRules();
-            _turnOrder = new TurnOrder(_players, firstPlayer);
-
-            _field = new Domain.Field.Field(_players);
-
-            foreach (var p in _players)
+            foreach (var p in State.Players)
             {
-                var board = new Domain.Board.Board();
+                var board = State.GetBoard(p);
                 board.DiceChanged += d => DiceChanged?.Invoke(p, d);
-                _boards[p] = board;
             }
 
-            ActivePlayerChanged?.Invoke(TurnOrder.ActivePlayer);
+            ActivePlayerChanged?.Invoke(State.TurnOrder.ActivePlayer);
         }
-
-        public PlayerField Get(PlayerId id) => _field.GetPlayerField(id);
-
-        public bool CanPlaceDice(PlayerId id, Dice.Dice dice, CellPosition pos)
-            => Get(id).CanPlaceDice(pos);
-
-        public void PlaceDice(PlayerId id, Dice.Dice dice, CellPosition pos)
-            => Get(id).PlaceDice(dice, pos);
-
-        public PlayerId GetOpponent(PlayerId id) => _players[0].Equals(id) ? _players[1] : _players[0];
         
-        public Domain.Dice.Dice GetDice(PlayerId playerId) => _boards[playerId].Dice;
+        public PlayerField Get(PlayerId id) => State.GetField(id);
+        public Dice.Dice GetDice(PlayerId playerId) => State.GetBoard(playerId).Dice;
 
         public void RollDice(PlayerId playerId)
         {
             EnsureNotFinished();
             EnsureTurnOwner(playerId);
-
-            _boards[playerId].RollDice();
+            State.GetBoard(playerId).RollDice();
         }
 
-        public void ClearDice(PlayerId playerId) => _boards[playerId].ClearDice();
-
-        public bool CanPlaceDice(PlayerId playerId, CellPosition position)
-        {
-            EnsureNotFinished();
-            EnsureTurnOwner(playerId);
-
-            var dice = _boards[playerId].Dice;
-            if (dice == null) return false;
-
-            return _field.GetPlayerField(playerId).CanPlaceDice(position);
-        }
-        
         public bool TryPlaceDice(PlayerId playerId, CellPosition position)
         {
             EnsureNotFinished();
             EnsureTurnOwner(playerId);
 
-            var dice = _boards[playerId].Dice;
+            var board = State.GetBoard(playerId);
+            var dice = board.Dice;
             if (dice == null) return false;
 
-            if (!_field.GetPlayerField(playerId).CanPlaceDice(position))
+            if (!State.GetField(playerId).CanPlaceDice(position))
                 return false;
 
-            _field.PlaceDice(playerId, dice, position);
-            _rules.ResolveAfterPlacement(_field, playerId, dice, position);
+            State.Field.PlaceDice(playerId, dice, position);
+            _rules.ResolveAfterPlacement(State.Field, playerId, dice, position);
 
             DicePlaced?.Invoke(playerId, dice, position);
-            _boards[playerId].ClearDice();
+            board.ClearDice();
 
-            var result = _rules.TryGetResult(_field);
+            var result = _rules.TryGetResult(State.Field);
             if (result.HasValue)
             {
                 IsFinished = true;
@@ -109,17 +78,18 @@ namespace CodeBase.Domain.Match
 
             return true;
         }
+        
         public void EndTurn()
         {
             EnsureNotFinished();
-            _turnOrder.Next();
-            ActivePlayerChanged?.Invoke(_turnOrder.ActivePlayer);
+            State.TurnOrder.Next();
+            ActivePlayerChanged?.Invoke(State.TurnOrder.ActivePlayer);
         }
 
         private void EnsureTurnOwner(PlayerId playerId)
         {
-            if (!_turnOrder.ActivePlayer.Equals(playerId))
-                throw new InvalidOperationException($"Not your turn. Active: {_turnOrder.ActivePlayer.Value}");
+            if (!State.TurnOrder.ActivePlayer.Equals(playerId))
+                throw new InvalidOperationException($"Not your turn. Active: {State.TurnOrder.ActivePlayer.Value}");
         }
 
         private void EnsureNotFinished()
