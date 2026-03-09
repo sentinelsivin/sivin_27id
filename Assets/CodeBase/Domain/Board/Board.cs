@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace CodeBase.Domain.Board
 {
@@ -10,7 +11,10 @@ namespace CodeBase.Domain.Board
 
         public void RollDice()
         {
-            Dice = Dice.Roll(); 
+
+            var roller = new Dice.Dice();   // создаём временный объект
+            Dice = roller.Roll();           // он генерирует новый случайный Dice
+
             DiceChanged?.Invoke(Dice);
         }
 

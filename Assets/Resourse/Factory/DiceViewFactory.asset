@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92845e9f3d2f7d3449aece4f7e2495ee, type: 3}
   m_Name: DiceViewFactory
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Essence.Dice.DiceFactory
-  _dicePrefab: {fileID: 0}
+  diceViewPrefab: {fileID: 5212652772310010130, guid: 95b6ae7b2b036c54c83e5e5e72d4c086, type: 3}

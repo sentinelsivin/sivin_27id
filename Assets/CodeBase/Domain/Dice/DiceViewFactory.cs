@@ -7,7 +7,7 @@ namespace CodeBase.Domain.Dice
     {
         [SerializeField] private DiceView diceViewPrefab;
 
-        public DiceView CreateDice(Domain.Dice.Dice dice, Transform transform)
+        public DiceView CreateDice(Dice dice, Transform transform)
         {
             DiceView instance = Instantiate(diceViewPrefab, transform);
             instance.Initialize(dice);

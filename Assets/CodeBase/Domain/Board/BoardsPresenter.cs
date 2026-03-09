@@ -13,31 +13,33 @@ namespace CodeBase.Domain.Board
         private readonly Dictionary<PlayerId, BoardSlot> _slotByPlayer = new();
         private readonly Dictionary<BoardSlot, BoardView> _viewBySlot = new();
 
-        private IMatchReadModel _match;
+        private IMatchReadModel _model;
 
-        public void Bind(IMatchReadModel match, PlayerId localPlayer, PlayerId opponentPlayer)
+        public void Bind(IMatchReadModel model, PlayerId localPlayer, PlayerId opponentPlayer)
         {
-            _match = match;
+            Unbind();
 
-            _viewBySlot[BoardSlot.Player] = _playerBoardView;
+            _model = model;
+
+            _slotByPlayer[localPlayer] = BoardSlot.Local;
+            _slotByPlayer[opponentPlayer] = BoardSlot.Opponent;
+            
+            _viewBySlot[BoardSlot.Local] = _playerBoardView;
             _viewBySlot[BoardSlot.Opponent] = _opponentBoardView;
 
-            _slotByPlayer[localPlayer] = BoardSlot.Player;
-            _slotByPlayer[opponentPlayer] = BoardSlot.Opponent;
+            _model.DiceChanged += OnDiceChanged;
 
-            _match.DiceChanged += OnDiceChanged;
-
-            // очистить UI на старте
-            _playerBoardView.EnsureDiceView(null);
-            _opponentBoardView.EnsureDiceView(null);
+            // initial sync
+            OnDiceChanged(localPlayer, _model.GetDice(localPlayer));
+            OnDiceChanged(opponentPlayer, _model.GetDice(opponentPlayer));
         }
         
         public void Unbind()
         {
-            if (_match != null)
-                _match.DiceChanged -= OnDiceChanged;
+            if (_model != null)
+                _model.DiceChanged -= OnDiceChanged;
 
-            _match = null;
+            _model = null;
             _slotByPlayer.Clear();
             _viewBySlot.Clear();
         }
@@ -45,15 +47,22 @@ namespace CodeBase.Domain.Board
         private void OnDiceChanged(PlayerId playerId, Dice.Dice dice)
         {
             if (!_slotByPlayer.TryGetValue(playerId, out var slot))
+            {
                 return;
+            }
 
-            _viewBySlot[slot].EnsureDiceView(dice);
+            if (!_viewBySlot.TryGetValue(slot, out var view))
+            {
+                return;
+            }
+            
+            view.EnsureDiceView(dice);
         }
 
         private void OnDestroy()
         {
-            if (_match != null)
-                _match.DiceChanged -= OnDiceChanged;
+            if (_model != null)
+                _model.DiceChanged -= OnDiceChanged;
         }
     }
 }

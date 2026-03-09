@@ -4,6 +4,7 @@ using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field;
 using CodeBase.Domain.Field.Cell;
 using CodeBase.Domain.Match.Module;
+using UnityEngine;
 
 namespace CodeBase.Domain.Match
 {
@@ -13,33 +14,36 @@ namespace CodeBase.Domain.Match
         public event Action<PlayerId, Dice.Dice> DiceChanged;
         public event Action<PlayerId, Dice.Dice, CellPosition> DicePlaced;
         public event Action<PlayerId?> GameEnded;
-        
+
         public IReadOnlyList<PlayerId> Players => State.Players;
         public PlayerId ActivePlayer => State.TurnOrder.ActivePlayer;
         public PlayerField GetField(PlayerId id) => State.GetField(id);
         public Board.Board GetBoard(PlayerId id) => State.GetBoard(id);
         public TurnOrder TurnOrder => State.TurnOrder;
-        
+
         public MatchState State { get; }
         public PlayerId? Winner { get; private set; }
         public bool IsFinished { get; private set; }
-        
+
         private readonly IMatchRules _rules;
-        
+
         public Match(MatchState state, IMatchRules rules)
         {
             State = state ?? throw new ArgumentNullException(nameof(state));
             _rules = rules ?? throw new ArgumentNullException(nameof(rules));
-            
+
             foreach (var p in State.Players)
             {
                 var board = State.GetBoard(p);
-                board.DiceChanged += d => DiceChanged?.Invoke(p, d);
+                board.DiceChanged += d =>
+                {
+                    DiceChanged?.Invoke(p, d);
+                };
             }
 
             ActivePlayerChanged?.Invoke(State.TurnOrder.ActivePlayer);
         }
-        
+
         public PlayerField Get(PlayerId id) => State.GetField(id);
         public Dice.Dice GetDice(PlayerId playerId) => State.GetBoard(playerId).Dice;
 
@@ -47,7 +51,10 @@ namespace CodeBase.Domain.Match
         {
             EnsureNotFinished();
             EnsureTurnOwner(playerId);
-            State.GetBoard(playerId).RollDice();
+            
+            var board = State.GetBoard(playerId);
+
+            board.RollDice();
         }
 
         public bool TryPlaceDice(PlayerId playerId, CellPosition position)
@@ -78,7 +85,7 @@ namespace CodeBase.Domain.Match
 
             return true;
         }
-        
+
         public void EndTurn()
         {
             EnsureNotFinished();

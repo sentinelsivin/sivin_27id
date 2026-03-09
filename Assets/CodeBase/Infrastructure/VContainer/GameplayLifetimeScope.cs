@@ -35,7 +35,8 @@ namespace CodeBase.Infrastructure.VContainer
             builder.Register<IOpponentIdSource, AiOpponentIdSource>(Lifetime.Singleton);
             builder.Register<IParticipantsProvider, ParticipantsProvider>(Lifetime.Singleton);
 
-            builder.Register<IFirstTurnSelector, LocalFirstTurnSelector>(Lifetime.Singleton);
+            //builder.Register<IFirstTurnSelector, LocalFirstTurnSelector>(Lifetime.Singleton);
+            builder.Register<IFirstTurnSelector, RandomFirstTurnSelector>(Lifetime.Singleton);
 
             builder.Register<GameStartConfigFactory>(Lifetime.Singleton);
 

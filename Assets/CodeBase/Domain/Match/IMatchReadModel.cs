@@ -13,6 +13,7 @@ namespace CodeBase.Domain.Match
 
         PlayerField GetField(PlayerId id);
         Board.Board GetBoard(PlayerId id);
+        Dice.Dice GetDice(PlayerId id);
 
         event Action<PlayerId> ActivePlayerChanged;
         event Action<PlayerId, Dice.Dice> DiceChanged;

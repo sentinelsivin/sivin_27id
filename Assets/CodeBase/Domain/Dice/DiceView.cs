@@ -8,9 +8,9 @@ namespace CodeBase.Domain.Dice
         [SerializeField] private SpriteRenderer _stateSprite;
         [SerializeField] private SpriteRenderer _pointSprite;
         
-        private Domain.Dice.Dice _dice;
+        private Dice _dice;
 
-        public void Initialize(Domain.Dice.Dice dice)
+        public void Initialize(Dice dice)
         {
             _dice = dice;
             SetInitSprite();

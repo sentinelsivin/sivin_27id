@@ -14,10 +14,10 @@ namespace CodeBase.Domain.Dice
         public Dice Roll()
         {
             Dice data = new Dice();
-            
+
             data.dicePointType = GetRandomEnum<DicePointType>();
             data.diceStateType = GetRandomEnum<DiceStateType>();
-            
+
             return data;
         }
         
