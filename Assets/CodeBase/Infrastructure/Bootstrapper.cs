@@ -4,7 +4,7 @@ using VContainer;
 
 namespace CodeBase.Infrastructure
 {
-    public class Bootstrapper : MonoBehaviour, ICoroutineRunner
+    public class Bootstrapper : MonoBehaviour
     {
         private IStartupSequence _startup;
 

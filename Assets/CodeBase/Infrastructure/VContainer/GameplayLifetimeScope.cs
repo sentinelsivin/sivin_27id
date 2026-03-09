@@ -3,6 +3,7 @@ using CodeBase.Domain.Match;
 using CodeBase.Domain.Match.Rules;
 using CodeBase.Infrastructure.DataProvider;
 using CodeBase.Services;
+using CodeBase.Services.Controllers;
 using CodeBase.Services.FirstTurn;
 using CodeBase.Services.GameStart;
 using CodeBase.Services.Participants;
@@ -41,6 +42,8 @@ namespace CodeBase.Infrastructure.VContainer
             // Domain
             builder.Register<IMatchRules, DefaultMatchRules>(Lifetime.Singleton);
             builder.Register<MatchFactory>(Lifetime.Singleton);
+            
+            builder.Register<IControllerFactory, VsAiControllerFactory>(Lifetime.Singleton);
 
             // Единственный entry point игровой сцены
             builder.RegisterEntryPoint<GameplayEntryPoint>();

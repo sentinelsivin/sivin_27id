@@ -3180,7 +3180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687697547}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3199,8 +3199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dfb0aa16e054678b34e3e5b7651a0b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Domain.Board.BoardsPresenter
-  _bottomBoardView: {fileID: 8938657644615038606}
-  _topBoardView: {fileID: 7032923571169331294}
+  _playerBoardView: {fileID: 8938657644615038606}
+  _opponentBoardView: {fileID: 7032923571169331294}
 --- !u!1 &1752038147
 GameObject:
   m_ObjectHideFlags: 0
@@ -3830,7 +3830,7 @@ GameObject:
   - component: {fileID: 8938657644615038605}
   - component: {fileID: 8938657644615038606}
   m_Layer: 0
-  m_Name: BoardBottom
+  m_Name: BoardPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4769,7 +4769,7 @@ GameObject:
   - component: {fileID: 5826291947166787873}
   - component: {fileID: 7032923571169331294}
   m_Layer: 0
-  m_Name: BoardUp
+  m_Name: BoardOpponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4951,9 +4951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e995048c5d724c4184b9d60fb0503e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBoardView
-  _diceRoot: {fileID: 0}
-  _diceView: {fileID: 0}
-  _diceViewFactory: {fileID: 0}
+  _diceRoot: {fileID: 863584285}
+  _diceViewFactory: {fileID: 11400000, guid: 0b2aa42d54d0c514c9f377fa948684a0, type: 2}
 --- !u!4 &7179356374253382818
 Transform:
   m_ObjectHideFlags: 0
@@ -5393,9 +5392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e995048c5d724c4184b9d60fb0503e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBoardView
-  _diceRoot: {fileID: 0}
-  _diceView: {fileID: 0}
-  _diceViewFactory: {fileID: 0}
+  _diceRoot: {fileID: 403707752}
+  _diceViewFactory: {fileID: 11400000, guid: 0b2aa42d54d0c514c9f377fa948684a0, type: 2}
 --- !u!224 &9156988083493498010
 RectTransform:
   m_ObjectHideFlags: 0

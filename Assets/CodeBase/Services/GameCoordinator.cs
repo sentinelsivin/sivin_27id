@@ -40,8 +40,6 @@ namespace CodeBase.Services
             var turnSystem = new TurnSystem(_match, controllers, 1);
             _gameFlow = new GameFlow(_match, turnSystem);
             _gameFlow.Start();
-
-            
         }
 
         public void StopGame()

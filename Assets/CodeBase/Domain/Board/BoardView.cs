@@ -6,24 +6,29 @@ namespace CodeBase.Domain.Board
     public class BoardView : MonoBehaviour
     {
         [SerializeField] private RectTransform _diceRoot;
-        [SerializeField] private DiceView _diceView;
         [SerializeField] private DiceViewFactory _diceViewFactory;
         
+        private DiceView _diceView;
+
         public void EnsureDiceView(Dice.Dice dice)
-        { 
+        {
             if (dice == null)
             {
-                if (_diceView != null)
-                    Destroy(_diceView.gameObject);
-
-                _diceView = null;
+                ClearDiceView();
                 return;
             }
 
-            if (_diceView != null)
-                Destroy(_diceView.gameObject);
-
+            ClearDiceView();
             _diceView = _diceViewFactory.CreateDice(dice, _diceRoot);
+        }
+        
+        private void ClearDiceView()
+        {
+            if (_diceView == null)
+                return;
+
+            Destroy(_diceView.gameObject);
+            _diceView = null;
         }
     }
 }

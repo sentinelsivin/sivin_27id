@@ -20,6 +20,7 @@ namespace CodeBase.Infrastructure.VContainer
             
             builder.RegisterComponent(_coroutineRunner).As<ICoroutineRunner>();
             builder.RegisterComponent(_loadingScreen).As<ILoadingScreen>();
+            
             builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
             
             builder.RegisterComponent(_bootstrapper);

@@ -17,7 +17,7 @@ namespace CodeBase.Domain.Match
             _model = model;
 
             _ui.Boards.Bind(_model, localPlayer, opponentPlayer);
-            _ui.Field.Bind(_model, localPlayer, opponentPlayer);
+            //_ui.Field.Bind(_model, localPlayer, opponentPlayer);
         }
 
         public void StopMatch()
@@ -25,7 +25,7 @@ namespace CodeBase.Domain.Match
             if (_model == null) return;
 
             _ui.Boards.Unbind();
-            _ui.Field.Unbind();
+           // _ui.Field.Unbind();
 
             _model = null;
         }
