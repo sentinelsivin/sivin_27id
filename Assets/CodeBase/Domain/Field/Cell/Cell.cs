@@ -14,6 +14,8 @@ namespace CodeBase.Domain.Field.Cell
             Row = row;
             Column = column;
         }
+        
+        public void Clear() => Dice = null;
 
         public void PlaceDice(Domain.Dice.Dice dice) => Dice = dice;
     }

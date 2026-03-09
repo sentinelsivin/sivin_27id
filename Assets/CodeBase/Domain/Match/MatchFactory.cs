@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Match.Module;
+using CodeBase.Domain.Match.Rules;
 
 namespace CodeBase.Domain.Match
 {

@@ -11,7 +11,7 @@ namespace CodeBase.Domain.Match
         IReadOnlyList<PlayerId> Players { get; }
         PlayerId ActivePlayer { get; }
 
-        PlayerField GetField(PlayerId id);
+        Field.Field GetField(PlayerId id);
         Board.Board GetBoard(PlayerId id);
         Dice.Dice GetDice(PlayerId id);
 

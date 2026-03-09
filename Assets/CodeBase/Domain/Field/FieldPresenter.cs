@@ -10,16 +10,14 @@ namespace CodeBase.Domain.Field
         [SerializeField] private FieldPanel _fieldPanel;
 
         private IMatchReadModel _match;
-        private PlayerId _bottom;
-        private PlayerId _top;
+        private PlayerSlotResolver _slotResolver;
 
-        public void Bind(IMatchReadModel match, PlayerId bottom, PlayerId top)
+        public void Bind(IMatchReadModel match, PlayerSlotResolver slotResolver)
         {
             Unbind();
 
             _match = match;
-            _bottom = bottom;
-            _top = top;
+            _slotResolver = slotResolver;
 
             _fieldPanel.EnsureCreated();
             _fieldPanel.ClearAll();
@@ -33,16 +31,18 @@ namespace CodeBase.Domain.Field
                 _match.DicePlaced -= OnDicePlaced;
 
             _match = null;
+            _slotResolver = null;
         }
 
         private void OnDicePlaced(PlayerId playerId, Domain.Dice.Dice dice, CellPosition pos)
         {
-            if (_match == null) return;
+            if (_match == null || _slotResolver == null)
+                return;
 
-            var slot = playerId.Equals(_bottom) ? PlayerSlot.Bottom : PlayerSlot.Top;
+            var slot = _slotResolver.Resolve(playerId);
             var view = _fieldPanel.Get(slot);
 
-            view.PlaceDice(dice, pos); // метод делаешь в FieldView
+            view.PlaceDice(dice, pos);
         }
 
         private void OnDestroy() => Unbind();

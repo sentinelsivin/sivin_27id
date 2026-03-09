@@ -10,59 +10,48 @@ namespace CodeBase.Domain.Board
         [SerializeField] private BoardView _playerBoardView;
         [SerializeField] private BoardView _opponentBoardView;
 
-        private readonly Dictionary<PlayerId, BoardSlot> _slotByPlayer = new();
-        private readonly Dictionary<BoardSlot, BoardView> _viewBySlot = new();
+        private readonly Dictionary<PlayerSlot, BoardView> _viewBySlot = new();
 
         private IMatchReadModel _model;
+        private PlayerSlotResolver _slotResolver;
 
-        public void Bind(IMatchReadModel model, PlayerId localPlayer, PlayerId opponentPlayer)
+        public void Bind(IMatchReadModel model, PlayerSlotResolver slotResolver)
         {
             Unbind();
 
             _model = model;
+            _slotResolver = slotResolver;
 
-            _slotByPlayer[localPlayer] = BoardSlot.Local;
-            _slotByPlayer[opponentPlayer] = BoardSlot.Opponent;
-            
-            _viewBySlot[BoardSlot.Local] = _playerBoardView;
-            _viewBySlot[BoardSlot.Opponent] = _opponentBoardView;
+            _viewBySlot[PlayerSlot.Local] = _playerBoardView;
+            _viewBySlot[PlayerSlot.Opponent] = _opponentBoardView;
 
             _model.DiceChanged += OnDiceChanged;
 
-            // initial sync
-            OnDiceChanged(localPlayer, _model.GetDice(localPlayer));
-            OnDiceChanged(opponentPlayer, _model.GetDice(opponentPlayer));
+            OnDiceChanged(_slotResolver.LocalPlayer, _model.GetDice(_slotResolver.LocalPlayer));
+            OnDiceChanged(_slotResolver.OpponentPlayer, _model.GetDice(_slotResolver.OpponentPlayer));
         }
-        
+
         public void Unbind()
         {
             if (_model != null)
                 _model.DiceChanged -= OnDiceChanged;
 
             _model = null;
-            _slotByPlayer.Clear();
+            _slotResolver = null;
             _viewBySlot.Clear();
         }
 
         private void OnDiceChanged(PlayerId playerId, Dice.Dice dice)
         {
-            if (!_slotByPlayer.TryGetValue(playerId, out var slot))
-            {
+            if (_slotResolver == null)
                 return;
-            }
 
-            if (!_viewBySlot.TryGetValue(slot, out var view))
-            {
-                return;
-            }
-            
-            view.EnsureDiceView(dice);
+            var slot = _slotResolver.Resolve(playerId);
+
+            if (_viewBySlot.TryGetValue(slot, out var view))
+                view.EnsureDiceView(dice);
         }
 
-        private void OnDestroy()
-        {
-            if (_model != null)
-                _model.DiceChanged -= OnDiceChanged;
-        }
+        private void OnDestroy() => Unbind();
     }
 }

@@ -5,31 +5,31 @@ namespace CodeBase.Domain.Field
 {
     public class FieldPanel : MonoBehaviour
     {
+        [SerializeField] private RectTransform _localPlayerRoot;
+        [SerializeField] private RectTransform _opponentPlayeRoot;
+        
         [SerializeField] private FieldViewFactory _fieldFactory;
-        [SerializeField] private RectTransform _filedFirstPanel;
-        [SerializeField] private RectTransform _filedSecondPanel;
 
-        private FieldView _bottom;
-        private FieldView _top;
+        private FieldView _localPlayerView;
+        private FieldView _opponentPlayerView;
 
         public void EnsureCreated()
         {
-            if (_bottom == null) _bottom = _fieldFactory.Create(_filedFirstPanel);
-            if (_top == null) _top = _fieldFactory.Create(_filedSecondPanel);
+            if (_localPlayerView == null) _localPlayerView = _fieldFactory.Create(_localPlayerRoot);
+            if (_opponentPlayerView == null) _opponentPlayerView = _fieldFactory.Create(_opponentPlayeRoot);
         }
 
         public FieldView Get(PlayerSlot slot)
         {
             EnsureCreated();
-            return slot == PlayerSlot.Bottom ? _bottom : _top;
+            return slot == PlayerSlot.Local ? _localPlayerView : _opponentPlayerView;
         }
 
         public void ClearAll()
         {
-            if (_bottom != null) _bottom.Clear();
-            if (_top != null) _top.Clear();
+            if (_localPlayerView != null) _localPlayerView.Clear();
+            if (_opponentPlayerView != null) _opponentPlayerView.Clear();
         }
     }
-
-    public enum PlayerSlot { Bottom, Top }
+    
 }

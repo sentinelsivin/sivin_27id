@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
-using CodeBase.Domain.Field;
 using CodeBase.Domain.Field.Cell;
 using CodeBase.Domain.Match.Module;
 
@@ -9,77 +8,95 @@ namespace CodeBase.Domain.Match.Rules
 {
     public class DefaultMatchRules : IMatchRules
     {
-        
-        public void ResolveAfterPlacement(Field.Field field, PlayerId placedBy, Dice.Dice placedDice, CellPosition pos)
+        public void ResolveAfterPlacement(MatchState state, PlayerId placedBy, Dice.Dice placedDice, CellPosition pos)
         {
-            if (field == null) throw new ArgumentNullException(nameof(field));
-            if (placedDice == null) return;
+            if (state == null)
+                throw new ArgumentNullException(nameof(state));
 
-            var opponent = field.GetOpponentOf(placedBy);
-            if (opponent == null) return;
+            if (placedDice == null)
+                return;
 
-            // ВЫБИВАНИЕ:
-            // классический вариант: выбиваем у противника ВСЕ дайсы с тем же значением в ТОМ ЖЕ СТОЛБЦЕ
-            var oppField = field.GetPlayerField(opponent.Value);
-            oppField.RemoveAllInColumnByValue(pos.Col, placedDice.Value);
+            if (pos == null)
+                throw new ArgumentNullException(nameof(pos));
 
-            // Если тебе нужно "в той же клетке (row+col)" — замени на:
-            // if (oppField.TryGetDice(pos, out var d) && d.Value == placedDice.Value) oppField.Remove(pos);
+            var opponentId = state.GetOpponent(placedBy);
+            var opponentField = state.GetField(opponentId);
+
+            opponentField.RemoveAllInColumnByValue(pos.Col, placedDice.Value);
         }
-        
 
-        public MatchResult? TryGetResult(Field.Field field)
+        public MatchResult? TryGetResult(MatchState state)
         {
-            if (field == null) throw new ArgumentNullException(nameof(field));
+            if (state == null)
+                throw new ArgumentNullException(nameof(state));
 
-            // конец игры: оба поля заполнены
-            if (!field.IsAllFieldsFull())
+            if (!AreAllFieldsFull(state))
                 return null;
 
-            var players = field.Players; // IReadOnlyList<PlayerId>
-            if (players.Count != 2)
+            if (state.Players.Count != 2)
                 throw new InvalidOperationException("DefaultMatchRules assumes exactly 2 players.");
 
-            var a = players[0];
-            var b = players[1];
+            var firstPlayer = state.Players[0];
+            var secondPlayer = state.Players[1];
 
-            int scoreA = ComputeTotalScore(field.GetPlayerField(a));
-            int scoreB = ComputeTotalScore(field.GetPlayerField(b));
+            var firstScore = ComputeTotalScore(state.GetField(firstPlayer));
+            var secondScore = ComputeTotalScore(state.GetField(secondPlayer));
 
-            if (scoreA > scoreB) return MatchResult.Win(a);
-            if (scoreB > scoreA) return MatchResult.Win(b);
+            if (firstScore > secondScore)
+                return MatchResult.Win(firstPlayer);
+
+            if (secondScore > firstScore)
+                return MatchResult.Win(secondPlayer);
+
             return MatchResult.Draw();
         }
 
-        private static int ComputeTotalScore(PlayerField playerField)
+        private static bool AreAllFieldsFull(MatchState state)
         {
-            int total = 0;
-            for (int col = 0; col < playerField.ColumnsCount; col++)
-                total += ComputeColumnScore(playerField.GetColumnDiceValues(col));
+            foreach (var playerId in state.Players)
+            {
+                if (!state.GetField(playerId).IsFull())
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static int ComputeTotalScore(Field.Field field)
+        {
+            var total = 0;
+
+            for (int col = 0; col < field.ColumnsCount; col++)
+                total += ComputeColumnScore(field.GetColumnDiceValues(col));
+
             return total;
         }
 
-        // Скоринг с мультипликатором одинаковых значений в столбце:
-        // если в столбце два "3", то вклад = 3*2*2 = 12 (потому что каждый 3 умножается на 2)
-        // если три "3" -> 3*3*3 = 27
+        // Если в колонке:
+        // [3]        -> 3
+        // [3,3]      -> 3*2*2 = 12
+        // [3,3,3]    -> 3*3*3 = 27
+        // [2,2,5]    -> 2*2*2 + 5*1*1 = 8 + 5 = 13
         private static int ComputeColumnScore(IReadOnlyList<int> values)
         {
-            // values содержит только заполненные клетки (без пустых)
-            // группируем по значению
             var counts = new Dictionary<int, int>();
+
             for (int i = 0; i < values.Count; i++)
             {
-                int v = values[i];
-                counts.TryGetValue(v, out int c);
-                counts[v] = c + 1;
+                var value = values[i];
+
+                counts.TryGetValue(value, out var count);
+                counts[value] = count + 1;
             }
 
-            int sum = 0;
-            foreach (var kv in counts)
+            var sum = 0;
+
+            foreach (var pair in counts)
             {
-                int v = kv.Key;
-                int c = kv.Value;
-                sum += v * c * c;
+                var value = pair.Key;
+                var count = pair.Value;
+
+                sum += value * count * count;
             }
 
             return sum;

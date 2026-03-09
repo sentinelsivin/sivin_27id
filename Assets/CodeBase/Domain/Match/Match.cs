@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeBase.Data.PlayerDataComponents;
-using CodeBase.Domain.Field;
 using CodeBase.Domain.Field.Cell;
 using CodeBase.Domain.Match.Module;
-using UnityEngine;
+using CodeBase.Domain.Match.Rules;
 
 namespace CodeBase.Domain.Match
 {
@@ -17,8 +16,6 @@ namespace CodeBase.Domain.Match
 
         public IReadOnlyList<PlayerId> Players => State.Players;
         public PlayerId ActivePlayer => State.TurnOrder.ActivePlayer;
-        public PlayerField GetField(PlayerId id) => State.GetField(id);
-        public Board.Board GetBoard(PlayerId id) => State.GetBoard(id);
         public TurnOrder TurnOrder => State.TurnOrder;
 
         public MatchState State { get; }
@@ -32,29 +29,23 @@ namespace CodeBase.Domain.Match
             State = state ?? throw new ArgumentNullException(nameof(state));
             _rules = rules ?? throw new ArgumentNullException(nameof(rules));
 
-            foreach (var p in State.Players)
+            foreach (var playerId in State.Players)
             {
-                var board = State.GetBoard(p);
-                board.DiceChanged += d =>
-                {
-                    DiceChanged?.Invoke(p, d);
-                };
+                var board = State.GetBoard(playerId);
+                board.DiceChanged += dice => DiceChanged?.Invoke(playerId, dice);
             }
-
-            ActivePlayerChanged?.Invoke(State.TurnOrder.ActivePlayer);
         }
 
-        public PlayerField Get(PlayerId id) => State.GetField(id);
+        public Field.Field GetField(PlayerId id) => State.GetField(id);
+        public Board.Board GetBoard(PlayerId id) => State.GetBoard(id);
         public Dice.Dice GetDice(PlayerId playerId) => State.GetBoard(playerId).Dice;
 
         public void RollDice(PlayerId playerId)
         {
             EnsureNotFinished();
             EnsureTurnOwner(playerId);
-            
-            var board = State.GetBoard(playerId);
 
-            board.RollDice();
+            State.GetBoard(playerId).RollDice();
         }
 
         public bool TryPlaceDice(PlayerId playerId, CellPosition position)
@@ -62,20 +53,28 @@ namespace CodeBase.Domain.Match
             EnsureNotFinished();
             EnsureTurnOwner(playerId);
 
+            if (position == null)
+                throw new ArgumentNullException(nameof(position));
+
             var board = State.GetBoard(playerId);
             var dice = board.Dice;
-            if (dice == null) return false;
 
-            if (!State.GetField(playerId).CanPlaceDice(position))
+            if (dice == null)
                 return false;
 
-            State.Field.PlaceDice(playerId, dice, position);
-            _rules.ResolveAfterPlacement(State.Field, playerId, dice, position);
+            var field = State.GetField(playerId);
+
+            if (!field.CanPlaceDice(position))
+                return false;
+
+            field.PlaceDice(dice, position);
+
+            _rules.ResolveAfterPlacement(State, playerId, dice, position);
 
             DicePlaced?.Invoke(playerId, dice, position);
             board.ClearDice();
 
-            var result = _rules.TryGetResult(State.Field);
+            var result = _rules.TryGetResult(State);
             if (result.HasValue)
             {
                 IsFinished = true;
@@ -89,6 +88,7 @@ namespace CodeBase.Domain.Match
         public void EndTurn()
         {
             EnsureNotFinished();
+
             State.TurnOrder.Next();
             ActivePlayerChanged?.Invoke(State.TurnOrder.ActivePlayer);
         }
@@ -96,7 +96,8 @@ namespace CodeBase.Domain.Match
         private void EnsureTurnOwner(PlayerId playerId)
         {
             if (!State.TurnOrder.ActivePlayer.Equals(playerId))
-                throw new InvalidOperationException($"Not your turn. Active: {State.TurnOrder.ActivePlayer.Value}");
+                throw new InvalidOperationException(
+                    $"Not your turn. Active: {State.TurnOrder.ActivePlayer.Value}");
         }
 
         private void EnsureNotFinished()

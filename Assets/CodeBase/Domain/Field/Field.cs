@@ -1,49 +1,110 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field.Cell;
 
 namespace CodeBase.Domain.Field
 {
-    public class Field 
+    public class Field
     {
-        private readonly Dictionary<PlayerId, PlayerField> _playerFields = new();
-        private readonly List<PlayerId> _players;
-
         private const int Rows = 3;
         private const int Columns = 3;
 
-        public Field(IEnumerable<PlayerId> players)
+        private readonly FieldColumn[] _columns;
+
+        public PlayerId OwnerId { get; }
+
+        public int RowsCount => Rows;
+        public int ColumnsCount => Columns;
+
+        public Field(PlayerId ownerId)
         {
-            _players = players?.ToList() ?? throw new ArgumentNullException(nameof(players));
-            foreach (var p in _players)
-                _playerFields[p] = new PlayerField(p, Rows, Columns);
+            OwnerId = ownerId;
+            _columns = new FieldColumn[Columns];
+
+            for (int i = 0; i < Columns; i++)
+                _columns[i] = new FieldColumn(i, Rows);
         }
 
-        public IReadOnlyList<PlayerId> Players => _players;
-
-        public PlayerField GetPlayerField(PlayerId playerId) => _playerFields[playerId];
-
-        public PlayerId? GetOpponentOf(PlayerId playerId)
+        public FieldColumn GetColumn(int columnIndex)
         {
-            if (_players.Count != 2) return null;
-            return _players[0].Equals(playerId) ? _players[1] : _players[0];
-        }
-        
-        public void PlaceDice(PlayerId playerId, Domain.Dice.Dice dice, CellPosition position)
-        {
-            _playerFields[playerId].PlaceDice(dice, position);
+            if (columnIndex < 0 || columnIndex >= ColumnsCount)
+                throw new ArgumentOutOfRangeException(nameof(columnIndex));
+
+            return _columns[columnIndex];
         }
 
-        public bool IsAllFieldsFull()
+        public bool CanPlaceDice(CellPosition pos)
         {
-            foreach (var p in _players)
-                if (!_playerFields[p].IsFull())
+            if (!IsInside(pos))
+                return false;
+
+            return _columns[pos.Col].CanPlaceDice(pos.Row);
+        }
+
+        public void PlaceDice(Dice.Dice dice, CellPosition pos)
+        {
+            if (dice == null)
+                throw new ArgumentNullException(nameof(dice));
+
+            if (!CanPlaceDice(pos))
+                throw new InvalidOperationException("Cannot place dice.");
+
+            _columns[pos.Col].PlaceDice(dice, pos.Row);
+        }
+
+        public bool TryGetDice(CellPosition pos, out Dice.Dice dice)
+        {
+            dice = null;
+
+            if (!IsInside(pos))
+                return false;
+
+            return _columns[pos.Col].TryGetDice(pos.Row, out dice);
+        }
+
+        public void Remove(CellPosition pos)
+        {
+            if (!IsInside(pos))
+                return;
+
+            _columns[pos.Col].Remove(pos.Row);
+        }
+
+        public void RemoveAllInColumnByValue(int column, int value)
+        {
+            if (column < 0 || column >= ColumnsCount)
+                return;
+
+            _columns[column].RemoveAllByValue(value);
+        }
+
+        public IReadOnlyList<int> GetColumnDiceValues(int column)
+        {
+            if (column < 0 || column >= ColumnsCount)
+                throw new ArgumentOutOfRangeException(nameof(column));
+
+            return _columns[column].GetDiceValues();
+        }
+
+        public bool IsFull()
+        {
+            for (int i = 0; i < _columns.Length; i++)
+            {
+                if (!_columns[i].IsFull())
                     return false;
+            }
+
             return true;
         }
-        
+
+        private bool IsInside(CellPosition pos)
+        {
+            if (pos == null)
+                return false;
+
+            return pos.Row >= 0 && pos.Row < RowsCount &&
+                   pos.Col >= 0 && pos.Col < ColumnsCount;
+        }
     }
-    
 }
