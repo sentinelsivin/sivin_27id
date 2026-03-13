@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeBase.Domain.Dice;
+using CodeBase.Domain.Field.Cell;
 using UnityEngine;
 
 namespace CodeBase.Domain.Field.View
@@ -11,17 +13,42 @@ namespace CodeBase.Domain.Field.View
 
         private readonly List<CellView> _cells = new();
 
-        private const int RowsCount = 3;
-
-        public void Build()
+        public void Build(int rowsCount)
         {
+            if (rowsCount <= 0)
+                throw new ArgumentOutOfRangeException(nameof(rowsCount));
+
             Clear();
 
-            for (int row = 0; row < RowsCount; row++)
+            for (int i = 0; i < rowsCount; i++)
             {
-                var cellView = Instantiate(_cellPrefab, _container);
+                CellView cellView = Instantiate(_cellPrefab, _container);
                 _cells.Add(cellView);
             }
+        }
+
+        public void PlaceDiceView(DiceView diceView, int row)
+        {
+            if (row < 0 || row >= _cells.Count)
+                throw new ArgumentOutOfRangeException(nameof(row));
+
+            _cells[row].SetDiceView(diceView);
+        }
+
+        public DiceView RemoveDiceView(int row)
+        {
+            if (row < 0 || row >= _cells.Count)
+                throw new ArgumentOutOfRangeException(nameof(row));
+
+            return _cells[row].RemoveDiceView();
+        }
+
+        public CellView GetCell(int row)
+        {
+            if (row < 0 || row >= _cells.Count)
+                throw new ArgumentOutOfRangeException(nameof(row));
+
+            return _cells[row];
         }
 
         public void Clear()
@@ -33,14 +60,6 @@ namespace CodeBase.Domain.Field.View
             }
 
             _cells.Clear();
-        }
-
-        public void PlaceDice(Dice.Dice dice, int row)
-        {
-            if (row < 0 || row >= _cells.Count)
-                throw new ArgumentOutOfRangeException(nameof(row));
-
-            _cells[row].SetDice(dice);
         }
     }
 }

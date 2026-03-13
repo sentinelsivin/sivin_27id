@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: DiceViewContent
   m_EditorClassIdentifier: Assembly-CSharp::CodeBase.Essence.Dice.DiceViewContent
   _stateSprites:
+  - {fileID: -1176493040738142238, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
+  - {fileID: -176656179110635969, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
+  - {fileID: -2445270664069382584, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
+  _pointSprites:
   - {fileID: -6525021167733605023, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   - {fileID: -8643577510940376794, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   - {fileID: 6877043428483873757, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   - {fileID: 1299973982417878700, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   - {fileID: -8626223825725498132, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   - {fileID: 1670398524818962327, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
-  _pointSprites:
-  - {fileID: -1176493040738142238, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
-  - {fileID: -176656179110635969, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
-  - {fileID: -2445270664069382584, guid: fc5e19315f8c7df458b5fd7c4bfc4f3f, type: 3}
   _fallback: {fileID: 0}

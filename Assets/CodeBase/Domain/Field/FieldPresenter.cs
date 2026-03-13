@@ -1,4 +1,5 @@
-﻿using CodeBase.Data.PlayerDataComponents;
+﻿using System;
+using CodeBase.Data.PlayerDataComponents;
 using CodeBase.Domain.Field.Cell;
 using CodeBase.Domain.Match;
 using UnityEngine;
@@ -19,7 +20,13 @@ namespace CodeBase.Domain.Field
             _match = match;
             _slotResolver = slotResolver;
 
-            _fieldPanel.EnsureCreated();
+            if (_match.Players == null || _match.Players.Count == 0)
+                throw new InvalidOperationException("Match does not contain players.");
+
+            PlayerId anyPlayerId = _match.Players[0];
+            Field field = _match.GetField(anyPlayerId);
+
+            _fieldPanel.EnsureCreated(field.ColumnsCount, field.RowsCount);
             _fieldPanel.ClearAll();
 
             _match.DicePlaced += OnDicePlaced;
@@ -42,7 +49,8 @@ namespace CodeBase.Domain.Field
             var slot = _slotResolver.Resolve(playerId);
             var view = _fieldPanel.Get(slot);
 
-            view.PlaceDice(dice, pos);
+            // Пока ничего не делаем:
+            // view.PlaceDiceView(..., pos);
         }
 
         private void OnDestroy() => Unbind();
